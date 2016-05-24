@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+<h1>User update Details</h1>
+<div th:text="${userdisplay}"></div>
+<tr>
+
+	<td><span th:text="${userdisplay.email}"></span></td>
+    <td><span th:text="${userdisplay.password}"></span></td>
+</tr>
+
+<form action="#" th:action="@{/update_name}" method="POST">
+<input type="text" name="username" />
+
+<button type="submit">Update name</button>
+</form>
+
+<form action="#" th:action="@{/update_password}" method="POST">
+<input type="text" name="userpassword" />
+<button type="submit">Update password</button>
+</form>
+
+
+</body>
+</html>

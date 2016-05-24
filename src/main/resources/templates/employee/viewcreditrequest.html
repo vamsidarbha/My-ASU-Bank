@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(viewcreditrequest)"></div>
+		<div th:replace="fragment/employee :: employee-header"></div>
+		<div class="page-header">
+            <h1>Credit/Debit Request</h1>
+        </div>
+        <div th:replace="fragment/common :: message"></div>
+		<div>
+			<h3>Transactions</h3>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>From</th>
+						<th>To</th>
+						<th>Amount</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+				    <tr th:if="${transactions.size()} == 0">
+				        <td colspan="4">There are no transactions</td>
+				    </tr>
+					<tr th:each="transaction : ${transactions}">
+						<td><span th:text="${transaction.fromAccount.user.username}"></span></td>
+						<td><span th:text="${transaction.toAccount.user.username}"></span></td>
+						<td><span th:text="${transaction.amount}"></span></td>
+						<td th:if="${transaction.status=='ACR'}">
+							<form action="#" th:object="${transaction}" th:action="@{/employee/credittransactions}" method="POST">
+								<input type="hidden" name="transactionId" th:value="*{transactionId}" />
+								<button type="submit" class="btn btn-success">Credit</button>
+							</form>
+						</td>
+						<td th:if="${transaction.status == 'ADT'}">
+							<form action="#" th:object="${transaction}" th:action="@{/employee/debittransactions}" method="POST">
+								<input type="hidden" name="transactionId" th:value="*{transactionId}" />
+								<button type="submit" class="btn btn-danger">Debit</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+		<script type="text/javascript" th:src="@{/js/myaccount.js}"></script>
+	</div>
+</body>
+</html>

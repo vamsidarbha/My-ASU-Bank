@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(myaccount)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Profile Change Requests</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Email</th>
+						<th>Address</th>
+						<th>Date Of Birth</th>
+						<th>Phone Number</th>
+						<th>Security Question</th>
+						<th>Security Answer</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${profileRequests.size()} == 0">
+						<td colspan="7">There are no profile requests</td>
+					</tr>
+					<tr th:each="row : ${profileRequests}">
+						<form th:action="@{/manager/approveprofilerequest}" th:object="${row}"
+							method="post">
+							<td th:text="*{user.email}"></td>
+							<td><span th:text="*{address}"></span></td>
+							<td>
+								<div th:if="*{dateOfBirth} != null">
+									<span th:text="*{#dates.format(dateOfBirth, 'MM/dd/yyyy')}"></span>
+								</div>
+								<div th:if="*{dateOfBirth} == null">
+									<span th:text="*{dateOfBirth}"></span>
+								</div>
+							</td>
+							<td th:text="*{phoneNumber}"></td>
+							<td th:text="*{securityQuestion}"></td>
+							<td th:text="*{sercurityAnswer}"></td>
+							<td><input type="hidden" name="rId" th:value="*{rId}" />
+								<button type="submit" class="btn btn-success">Approve</button></td>
+						</form>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

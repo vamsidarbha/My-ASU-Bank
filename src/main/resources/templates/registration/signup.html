@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(signup)"></div>
+		<div th:replace="fragment/common :: message"></div>
+		<form id="signup-form" action="#" th:action="@{/signup}" th:object="${form}"
+			method="post" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Username</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{username}" class="form-control"
+						placeholder="User name" /> <label
+						th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Email</label>
+				<div class="col-sm-10">
+					<input type="email" th:field="*{email}" th:errorclass="fieldError"
+						class="form-control" placeholder="Email address" /> <label
+						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Password</label>
+				<div class="col-sm-10">
+					<input type="password" th:field="*{password}" class="form-control"
+						placeholder="Password" /> <label th:if="${#fields.hasErrors('password')}"
+						th:errors="*{password}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Address</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{address}" class="form-control"
+						placeholder="Address" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Phone Number</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{phoneNumber}" class="form-control"
+						placeholder="Phone Number" /> <label
+						th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Date of Birth</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{dateOfBirth}" class="form-control"
+						placeholder="Date of Birth (mm/dd/yyyy)" /> <label
+						th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Gender</label>
+				<div class="col-sm-10">
+					<label><input type="radio" th:field="*{gender}" th:value="Male" />
+						Male</label> <label><input type="radio" th:field="*{gender}"
+						th:value="Female" /> Female</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Type of Account</label>
+				<div class="col-sm-10">
+					<select th:field="*{typeOfAccount}" class="form-control">
+						<option th:value="C">Checkings</option>
+						<option th:value="S">Savings</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="role">Account Type</label>
+				<div class="col-sm-10">
+					<select th:field="*{role.name}" class="form-control">
+						<option th:value="ROLE_CUSTOMER">Customer</option>
+						<option th:value="ROLE_MERCHANT">Merchant</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Security question</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{securityQuestion}" class="form-control"
+						placeholder="This will be used in recovering your password" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Security question answer</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{securityAnswer}" class="form-control"
+						placeholder="Answer to your security question" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div id="g-recaptcha" class="col-sm-offset-2 col-sm-10"></div>
+				<noscript>For your safety, we want to ensure that you are a human
+					and not a robot. Kindly enable javascript for signup.</noscript>
+			</div>
+			<input type="hidden" id="recaptchaResponse" name="recaptchaResponse"
+				th:value="${recaptchaResponse}" />
+			<script th:inline="javascript">
+            var onloadCallback = function() {
+                grecaptcha
+                .render(
+                	    'g-recaptcha',
+                	    {
+                	        'sitekey' : /*[[${recaptchaSiteKey}]]*/,
+                	        'callback' : function(response) {
+                	            document
+                	            .getElementById('recaptchaResponse').value = response;
+               	            },
+               	            'theme' : 'light'
+           	             });
+                }
+            </script>
+			<script
+				th:src="@{https://www.google.com/recaptcha/api.js(onload=onloadCallback, render=explicit)}"></script>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary">Sign Up</button>
+				</div>
+			</div>
+		</form>
+		<div th:replace="fragment/common :: [//footer]"></div>
+	</div>
+	<script th:src="@{/webjars/jquery-validation/1.14.0/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/signup.js}"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<link th:href="@{/css/keyboard-basic.min.css}" rel="stylesheet" media="screen" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(home)"></div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="jumbotron text-center">
+					<h1>My ASU Bank</h1>
+					<h4>Special Offer: New users get free 100$</h4>
+				</div>
+			</div>
+			<div sec:authorize="isAnonymous()" class="col-sm-4">
+				<h3>
+					Customer Login <small><a th:href="@{/signup}">New User?</a></small>
+				</h3>
+				<hr />
+				<div th:if="${param.error != null} and ${param.error[0] == 'expired'}"
+					class="alert alert-danger" role="alert">
+					<p>Your session has expired, please login again</p>
+				</div>
+				<div th:if="${param.logout}">You have been logged out.</div>
+				<div class="error"
+					th:if="${param.error} and ${session['SPRING_SECURITY_LAST_EXCEPTION']}"
+					th:with="errorMsg=${session['SPRING_SECURITY_LAST_EXCEPTION'].message}">
+					<div th:switch="${errorMsg}" class="alert alert-danger" role="alert">
+						<p th:case="'Bad credentials'">Invalid username and password</p>
+						<p th:case="'blocked'">Too many failed login attempts. You have been
+							banned for a day!</p>
+						<p th:case="'expired'">Your session has expired, please logging again</p>
+						<p th:case="*" th:text="${errorMsg}"></p>
+					</div>
+				</div>
+				<form th:action="@{/}" method="post" class="form-horizontal" id="login-form">
+					<div class="form-group">
+						<label class="control-label col-sm-5" for="email">Email</label>
+						<div class="col-sm-7">
+							<input id="email" type="email" name="m_email" placeholder="Email"
+								class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-5" for="password">Password</label>
+						<div class="col-sm-7">
+							<input id="password" type="password" name="m_password"
+								class="form-control" placeholder="Password" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-5">
+							<small class="pull-right"> <a th:href="@{/login/identify}">Forgot
+									password?</a>
+							</small>
+						</div>
+						<div class="col-sm-7">
+							<button type="submit" class="btn btn-primary form-control">Sign
+								In</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div sec:authorize="isAuthenticated()" class="col-sm-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<span sec:authentication="name"></span>
+						</h3>
+					</div>
+					<div class="panel-body">
+						<ul class="nav nav-pills nav-stacked">
+							<li><a th:href="@{/profile}">Profile</a></li>
+							<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+								th:href="@{/admin/myaccount}">My Account</a></li>
+							<li sec:authorize="hasRole('ROLE_MANAGER')"><a
+								th:href="@{/manager/myaccount}">My Account</a></li>
+							<li sec:authorize="hasRole('ROLE_EMPLOYEE')"><a
+								th:href="@{/employee/myaccount}">My Account</a></li>
+							<li sec:authorize="hasRole('ROLE_CUSTOMER')"><a
+								th:href="@{/customer/myaccount}">My Account</a></li>
+							<li sec:authorize="hasRole('ROLE_MERCHANT')"><a
+								th:href="@{/merchant/myaccount}">My Account</a></li>
+							<li class="disabled"><a href="#">Last logged in at <strong
+									th:text="${lastLoginDate}"></strong></a></li>
+							<li class="disabled"><a href="#">Last login IP <strong
+									th:text="${lastLoginIP}"></strong></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="fragment/common :: [//footer]"></div>
+	</div>
+	<script th:src="@{/webjars/jquery-validation/1.14.0/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/login.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.keyboard.min.js}"></script>
+</body>
+</html>

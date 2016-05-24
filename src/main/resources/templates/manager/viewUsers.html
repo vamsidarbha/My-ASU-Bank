@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(manager)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Customer &amp; Merchant Details</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Username</th>
+						<th>Type</th>
+						<th>Address</th>
+						<th>Phone #</th>
+						<th>DoB</th>
+						<th>Options</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${form.users.size()} == 0">
+						<td colspan="7">There are no employees</td>
+					</tr>
+					<tr th:each="user, stat : ${form.users}">
+						<form th:object="${form.users[__${stat.index}__]}"
+							th:action="@{/manager/update}" method="POST">
+							<td><input type="text" name="username" th:value="*{username}"
+								class="form-control" /></td>
+							<td th:switch="*{role.name}"><span th:case="'ROLE_CUSTOMER'">Customer</span>
+								<span th:case="'ROLE_MERCHANT'">Merchant</span></td>
+							<td><input type="text" name="address" th:value="*{address}"
+								class="form-control" /></td>
+							<td><input type="text" name="phoneNumber" th:value="*{phoneNumber}"
+								class="form-control" /></td>
+							<td><input type="text" name="dateOfBirth"
+								th:value="*{#dates.format(dateOfBirth, 'MM/dd/yyyy')}"
+								class="form-control" /></td>
+							<td><input type="hidden" name="id" th:value="*{id}" />
+								<button type="submit" class="btn btn-default">Update</button></td>
+						</form>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

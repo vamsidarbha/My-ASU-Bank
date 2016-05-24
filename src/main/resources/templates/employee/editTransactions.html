@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(userpayment)"></div>
+		<div th:replace="fragment/employee :: employee-header"></div>
+		<div class="page-header">
+			<h1>Modify Transaction</h1>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<p th:text="${result1}">MyASU BANK</p>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Transfer Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row : ${modify_transaction}">
+						<td><span th:text="*{#dates.format(transferDate,'MM/dd/yyyy')}"></span></td>
+						<td>
+							<form action="#" th:action="@{/modifyDate_transactions}"
+								th:object="${row}" method="post">
+								<input type="text" name="transferDate" /> <input type="hidden"
+									name="transactionId" th:value="*{transactionId}" />
+								<button type="Submit" name="action" value="Updatedate">Update</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+
+</html>

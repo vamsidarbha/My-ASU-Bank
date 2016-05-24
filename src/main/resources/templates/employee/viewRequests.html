@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(userpayment)"></div>
+		<div th:replace="fragment/employee :: employee-header"></div>
+		<div class="page-header">
+			<h1>Profile Change Requests</h1>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<p th:text="${result1}">MyASU BANK</p>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Email</th>
+						<th>Address</th>
+						<th>D.O.B</th>
+						<th>Phone</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${requests.size()} == 0">
+						<td colspan="6">No requests to show</td>
+					</tr>
+					<tr th:each="request : ${requests}">
+						<form action="#" th:action="@{/employee/requests}" th:object="${request}"
+							method="post">
+							<td th:text="${request.user.email}"></td>
+						<td th:text="${request.address}"></td>
+						<td>
+							<div th:if="*{dateOfBirth} != null">
+								<span th:text="*{#dates.format(dateOfBirth,'MM/dd/yyyy')}"></span>
+							</div>
+							<div th:if="*{dateOfBirth} == null">N/A</div>
+						</td>
+						<td th:text="${request.phoneNumber}"></td>
+						<td th:text="${request.status}"></td>
+						<td><input type="hidden" name="rId" th:value="*{rId}" />
+							<button class="btn btn-sm btn-success" type="Submit" name="action"
+								value="Authorize">Authorize</button>
+							<button class="btn btn-sm btn-danger" type="Submit" name="action"
+								value="Decline">Decline</button></td>
+						</form>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

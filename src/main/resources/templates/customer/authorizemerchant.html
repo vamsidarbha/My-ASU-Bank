@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(authorizemerchant)"></div>
+		<div th:replace="fragment/customer :: customer-header"></div>
+		<div class="page-header">
+			<h3>Merchant Request</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div>
+			<h3>Transactions</h3>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Date</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Amount</th>
+						<th>Comment</th>
+						<th>Approve</th>
+						<th>Decline</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${transactions.size()} == 0">
+						<td colspan="7">There are no transactions</td>
+					</tr>
+					<tr th:each="transaction : ${transactions}">
+						<td><span
+							th:text="*{#dates.format(transaction.transferDate,'MM/dd/yyyy')}"></span></td>
+						<td><span th:text="${transaction.fromAccount.user.username}"></span></td>
+						<td><span th:text="${transaction.toAccount.user.username}"></span></td>
+						<td><span th:text="${transaction.amount}"></span></td>
+						<td><span th:text="${transaction.comment}"></span></td>
+						<td>
+							<form action="#" th:object="${transaction}"
+								th:action="@{/customer/approverequest}" method="POST">
+								<input type="hidden" name="transactionId" th:value="*{transactionId}" />
+								<button type="submit" class="btn btn-success">Authorize</button>
+							</form>
+						</td>
+						<td>
+							<form action="#" th:object="${transaction}"
+								th:action="@{/customer/declinerequest}" method="POST">
+								<input type="hidden" name="transactionId" th:value="*{transactionId}" />
+								<button type="submit" class="btn btn-danger">Decline</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+		<script type="text/javascript" th:src="@{/js/myaccount.js}"></script>
+	</div>
+</body>
+</html>

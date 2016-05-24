@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(myaccount)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Delete User</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Username</th>
+						<th>Email</th>
+						<th>Address</th>
+						<th>PhoneNumber</th>
+						<th>DoB</th>
+						<th>Gender</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${users.size()} == 0">
+						<td colspan="7">There are no delete requests</td>
+					</tr>
+					<tr style="cursor: pointer" th:each="user : ${users}">
+						<td><span th:text="${user.username}"></span></td>
+						<td><span th:text="${user.email}"></span></td>
+						<td><span th:text="${user.address}"></span></td>
+						<td><span th:text="${user.phoneNumber}"></span></td>
+						<td>
+							<div th:if="${user.dateOfBirth} != null">
+								<span th:text="${#dates.format(user.dateOfBirth,'MM/dd/yyyy')}"></span>
+							</div>
+							<div th:if="${user.dateOfBirth} == null">
+								N/A
+							</div>
+						</td>
+						<td><span th:text="${user.gender}"></span></td>
+						<td>
+							<form action="#" th:object="${user}" th:action="@{/manager/deleteUsers}"
+								method="POST">
+								<input type="hidden" name="email" id="email" th:value="*{email}" />
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="employee-header" >
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li ><a th:href="@{/employee/transactions}">View Transactions</a></li>
+						<li><a th:href="@{/employee/requests}">View Requests</a></li>
+						<li><a th:href="@{/employee/userscreditrequest}">Users request</a></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</div>
+</body>
+</html>

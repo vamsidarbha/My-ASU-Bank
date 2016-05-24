@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(signup)"></div>
+		<div th:replace="fragment/common :: message"></div>
+		<div th:if="${url}">
+		  <div class="jumbotron">Please use <a th:href="${url}">this link</a> to resend a verification token</div>
+		</div>
+		<div th:replace="fragment/common :: [//footer]"></div>
+	</div>
+</body>
+</html>

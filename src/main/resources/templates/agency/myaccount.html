@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(agency)"></div>
+		<div th:include="fragment/agency :: agency-header"></div>
+		<h1>Agency Dashboard</h1>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

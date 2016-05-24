@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(admin)"></div>
+        <div th:replace="fragment/admin :: admin-header"></div>
+		<div class="page-header">
+			<h3>
+				Request PII from agency
+			</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<form id="init-form" class="form-horizontal" role="form" action="#"
+			th:action="@{/admin/piirequest}" th:object="${piirequest}"
+			method="post">
+			<div class="form-group">
+				<label class="col-md-3 control-label">Customer Email:</label>
+				<div class="col-md-5">
+					<input type="email" class="form-control" name="email"
+						id="email" th:field="*{email}" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</form>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+	<script th:src="@{/webjars/jquery-validation/1.14.0/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/initTrans.js}"></script>
+</body>
+</html>

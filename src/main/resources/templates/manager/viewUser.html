@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(viewUser)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Account</h3>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Username</th>
+						<th>Email</th>
+						<th>Address</th>
+						<th>PhoneNumber</th>
+						<th>DoB</th>
+						<th>Gender</th>
+						<th>Role</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span th:text="${viewuser.username}"></span></td>
+						<td><span th:text="${viewuser.email}"></span></td>
+						<td><span th:text="${viewuser.address}"></span></td>
+						<td><span th:text="${viewuser.phoneNumber}"></span></td>
+						<td>
+							<div th:if="*{viewuser.dateOfBirth} != null">
+								<span th:text="${#dates.format(viewuser.dateOfBirth,'MM/dd/yyyy')}"></span>
+							</div>
+							<div th:if="*{viewuser.dateOfBirth} == null">
+								<span th:text="*{viewuser.dateOfBirth}"></span>
+							</div>
+						</td>
+						<td><span th:text="*{viewuser.gender}"></span></td>
+						<td th:if="*{viewuser.role.name.equalsIgnoreCase('ROLE_MERCHANT')}"><span th:text="Merchant"></span></td>
+						<td th:if="*{viewuser.role.name.equalsIgnoreCase('ROLE_CUSTOMER')}"><span th:text="Customer"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

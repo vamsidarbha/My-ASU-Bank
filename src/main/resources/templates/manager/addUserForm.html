@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(addUserForm)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Add User Form</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<form id="addUser-form" th:action="@{/manager/addUserForm}"
+			th:object="${form}" method="POST" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Name</label>
+				<div class="col-sm-9">
+					<input type="text" th:field="*{username}" th:errorclass="fieldError"
+						class="form-control" placeholder="User name" /> <label
+						th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Email</label>
+				<div class="col-sm-9">
+					<input type="email" th:field="*{email}" th:errorclass="fieldError"
+						class="form-control" placeholder="Email address" /> <label
+						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Date of Birth: </label>
+				<div class="col-md-9">
+					<div th:if="*{dateOfBirth} != null">
+						<input placeholder="MM/dd/yyyy" type="text" th:field="*{dateOfBirth}"
+							th:value="*{#dates.format(dateOfBirth,'MM/dd/yyyy')}"
+							class="form-control" />
+					</div>
+					<div th:if="*{dateOfBirth} == null">
+						<input type="text" th:field="*{dateOfBirth}" name="dateOfBirth"
+							th:value="*{dateOfBirth}" class="form-control" />
+					</div>
+					<label th:if="${#fields.hasErrors('dateOfBirth')}"
+						th:errors="*{dateOfBirth}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="role">Account Type</label>
+				<div class="col-sm-9">
+					<select th:field="*{role.name}" class="form-control">
+						<option th:value="ROLE_CUSTOMER">Customer</option>
+						<option th:value="ROLE_MERCHANT">Merchant</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-9">
+					<button type="submit" class="btn btn-primary">Sign Up</button>
+				</div>
+			</div>
+		</form>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

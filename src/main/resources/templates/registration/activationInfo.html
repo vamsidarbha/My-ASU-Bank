@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(signup)"></div>
+		<div class="jumbotron">
+			Thank you <strong><span th:text="${username}"></span></strong> for registering with
+			our Bank. You will shortly <strong>(5-10 minutes)</strong> receive a verification email at <span
+				th:text="${email}"></span> to activate your account.
+		</div>
+		<div th:replace="fragment/common :: [//footer]"></div>
+	</div>
+</body>
+</html>

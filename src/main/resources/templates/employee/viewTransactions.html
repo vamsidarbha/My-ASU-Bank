@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(userpayment)"></div>
+		<div th:replace="fragment/employee :: employee-header"></div>
+		<div class="page-header">
+			<h1>View Transactions</h1>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Transfer Date</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Amount</th>
+						<th>Status</th>
+						<th>Comment</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${transactions.size()} == 0">
+						<td colspan="7">No transactions to show</td>
+					</tr>
+					<tr th:each="row : ${transactions}">
+						<form action="#" th:action="@{/employee/transactions}" th:object="${row}"
+							method="post">
+							<td>
+								<div th:if="*{transferDate} != null">
+									<span th:text="*{#dates.format(transferDate,'MM/dd/yyyy')}"></span>
+								</div>
+								<div th:if="*{transferDate} == null">
+									<span>N/A</span>
+								</div>
+							</td>
+							<td th:text="*{fromAccount.user.email}"></td>
+							<td th:text="*{toAccount.user.email}"></td>
+							<td th:text="*{amount}"></td>
+							<td th:text="*{status}"></td>
+							<td th:text="*{comment}"></td>
+							<td><input type="hidden" name="transactionId"
+								th:value="*{transactionId}" />
+								<button class="btn btn-sm btn-success" type="Submit" name="action"
+									value="Authorize">Authorize</button>
+								<button class="btn btn-sm btn-danger" type="Submit" name="action"
+									value="Decline">Decline</button></td>
+						</form>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

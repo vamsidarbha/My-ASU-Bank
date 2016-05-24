@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(transferfunds)"></div>
+		<div th:if="${role} == customer">
+			<div th:replace="fragment/customer :: customer-header"></div>
+		</div>
+		<div th:if="${role} == merchant">
+			<div th:replace="fragment/merchant :: merchant-header"></div>
+		</div>
+		<div class="page-header">
+			<h1>Transfer Funds</h1>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<form id="tF-form" class="form-horizontal" role="form"
+			th:action="@{/customer/transferfunds}" th:object="${form}" method="post">
+			<div class="form-group">
+				<label class="col-md-3 control-label">Recipient's Email Address: </label>
+				<div class="col-md-5">
+					<input type="email" class="form-control" th:field="*{email}"></input><label
+						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Encrypted Amount : </label>
+				<div class="col-md-5">
+					<textarea class="form-control" name="amount" id="amount"
+						th:field="*{amount}"></textarea><label th:if="${#fields.hasErrors('amount')}"
+						th:errors="*{amount}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Comments: </label>
+				<div class="col-md-5">
+					<textarea class="form-control" rows="2" name="comment"
+						th:field="*{comment}"></textarea>
+					<label th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</form>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+	<script th:src="@{/webjars/jquery-validation/1.14.0/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/tranFund.js}"></script>
+</body>
+</html>

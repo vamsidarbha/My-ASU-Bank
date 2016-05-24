@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(myaccount)"></div>
+		<div th:if="${role} == customer">
+			<div th:replace="fragment/customer :: customer-header"></div>
+		</div>
+		<div th:if="${role} == merchant">
+			<div th:replace="fragment/merchant :: merchant-header"></div>
+		</div>
+		<div class="page-header">
+			<h1>My Account</h1>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr class="info">
+					<th class="col-sm-3">Account Number</th>
+					<th class="col-sm-2">Account Type</th>
+					<th class="col-sm-2">Balance</th>
+					<th class="col-sm-2">Created Date</th>
+					<th class="col-sm-3">Critical Limit</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr style="cursor: pointer" th:each="account : ${accounts}">
+					<td class="col-sm-3"><span th:text="${account.accId}"></span></td>
+					<td class="col-sm-2"><span th:text="${account.typeOfAccount}"></span></td>
+					<td class="col-sm-2"><span th:text="${account.balance}"></span></td>
+					<td class="col-sm-2"><span th:text="${account.created}"></span></td>
+					<td class="col-sm-3">
+						<div class="critical-limit">
+							<span th:text="${account.criticalLimit}"></span> <a
+								class="change-limit btn btn-sm btn-primary pull-right" href="#"> <i
+								class="fa fa-pencil"></i>
+							</a>
+						</div>
+						<form class="hidden-form form-inline" th:action="@{/changelimit}"
+							method="post">
+							<div class="form-group">
+								<input class="form-control" type="number" name="limit" id="limit"
+									th:value="${account.criticalLimit}" />
+							</div>
+							<button class="btn btn-sm btn-success pull-right">
+								<i class="fa fa-check"></i>
+							</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr />
+		<div class="page-header">
+			<h3>
+				Transactions <a class="btn btn-sm btn-primary pull-right" th:href="@{/getstatement}">Download Statement</a>
+			</h3>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Date</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Amount</th>
+						<th>Comment</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${transactions.size()} == 0">
+						<td colspan="6">There are no transactions</td>
+					</tr>
+					<tr th:each="transaction : ${transactions}">
+						<td>
+							<div th:if="*{transaction.transferDate} != null">
+								<span th:text="*{#dates.format(transaction.transferDate,'MM/dd/yyyy')}"></span>
+							</div>
+							<div th:if="*{transaction.transferDate} == null">
+								<span>N/A</span>
+							</div>
+						</td>
+						<td><span th:text="${transaction.fromAccount.user.email}"></span></td>
+						<td><span th:text="${transaction.toAccount.user.email}"></span></td>
+						<td><span th:text="${transaction.amount}"></span></td>
+						<td><span th:text="${transaction.comment}"></span></td>
+						<td
+							th:if="${transaction.status.equalsIgnoreCase('V') || transaction.status.equalsIgnoreCase('OV')}">
+							<span th:text="Completed"></span>
+						</td>
+						<td
+							th:if="${transaction.status.equalsIgnoreCase('P') || transaction.status.equalsIgnoreCase('OP') || transaction.status.equalsIgnoreCase('PCV') || transaction.status.equalsIgnoreCase('CV')}">
+							<span th:text="Pending"></span>
+						</td>
+						<td th:if="${transaction.status.equalsIgnoreCase('ADT')}">Pending
+							Debit</td>
+						<td th:if="${transaction.status.equalsIgnoreCase('CREDIT_V')}">
+							Credited</td>
+						<td th:if="${transaction.status.equalsIgnoreCase('DEBIT_V')}">
+							Debited</td>
+						<td th:if="${transaction.status.equalsIgnoreCase('ACR')}">Pending
+							Credit</td>
+						<td th:if="${transaction.status.equalsIgnoreCase('CD') || transaction.status.equalsIgnoreCase('D') }"><span
+							th:text="Declined"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+		<script type="text/javascript" th:src="@{/js/myaccount.js}"></script>
+	</div>
+</body>
+</html>

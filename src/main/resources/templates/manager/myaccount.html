@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(myaccount)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<p>
+			Hello <strong> <span th:text="${username}"></span> !
+			</strong>
+		</p>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

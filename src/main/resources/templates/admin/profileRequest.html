@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(admin)"></div>
+		<div th:replace="fragment/admin :: admin-header"></div>
+		<div class="page-header">
+			<h3>Profile Requests</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Username</th>
+						<th>Address</th>
+						<th>Phone Number</th>
+						<th>Date of Birth</th>
+						<th>Status</th>
+						<th>Authorize</th>
+						<th>Decline</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${requests.size()} == 0">
+						<td colspan="7">There are no requests</td>
+					</tr>
+					<tr style="cursor: pointer" th:each="request : ${requests}">
+						<td><span th:text="*{request.user.username}"></span></td>
+						<td><span th:text="*{request.address}"></span></td>
+						<td><span th:text="*{request.phoneNumber}"></span></td>
+						<td><span
+							th:text="*{#dates.format(request.dateOfBirth,'MM/dd/yyyy')}"></span></td>
+						<td><span th:text="*{request.status}"></span></td>
+						<td>
+							<form th:object="${request}" th:action="@{/approveProfileRequest}"
+								method="POST">
+								<input type="hidden" name="rId" th:value="*{rId}" />
+								<button type="submit" class="btn btn-primary">Approve</button>
+							</form>
+						</td>
+						<td>
+							<form th:object="${request}" th:action="@{/declineProfileRequest}"
+								method="POST">
+								<input type="hidden" name="rId" th:value="*{rId}" />
+								<button type="submit" class="btn btn-primary">Decline</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

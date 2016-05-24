@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(admin)"></div>
+		<div th:replace="fragment/admin :: admin-header"></div>
+		<div class="page-header">
+			<h3>Manager Details</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Username</th>
+						<th>Address</th>
+						<th>Phone #</th>
+						<th>DoB</th>
+						<th>Gender</th>
+						<th colspan="2">Options</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${form.users.size()} == 0">
+						<td colspan="7">There are no managers</td>
+					</tr>
+					<tr th:each="user, stat : ${form.users}">
+						<form th:object="${form.users[__${stat.index}__]}"
+							th:action="@{/admin/managers/update}" method="POST">
+							<td><input type="text" name="username" th:value="*{username}"
+								class="form-control" /></td>
+							<td><input type="text" name="address" th:value="*{address}"
+								class="form-control" /></td>
+							<td><input type="text" name="phoneNumber" th:value="*{phoneNumber}"
+								class="form-control" /></td>
+							<td><input type="text" name="dateOfBirth"
+								th:value="*{#dates.format(dateOfBirth,'MM/dd/yyyy')}"
+								class="form-control" /></td>
+							<td><label><input type="radio" name="gender" th:value="Male"
+									th:checked="*{gender} == 'Male'" /> M</label> <label><input
+									type="radio" name="gender" th:value="Female"
+									th:checked="*{gender} == 'Female'" /> F</label></td>
+							<td><input type="hidden" name="id" th:value="*{id}" />
+								<button type="submit" class="btn btn-default">Update</button></td>
+						</form>
+						<td>
+							<form action="#" th:object="${form.users[__${stat.index}__]}"
+								th:action="@{/admin/managers/delete}" method="POST">
+								<input type="hidden" name="id" th:value="*{id}" /> <input type="hidden"
+									name="username" th:value="*{username}" />
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

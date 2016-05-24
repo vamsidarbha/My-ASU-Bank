@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(signup)"></div>
+		<div class="jumbotron">
+			Thank you for activating your account. Please go to <a
+				th:href="@{/login}">login</a> page to access your bank.
+		</div>
+		<div th:replace="fragment/common :: [//footer]"></div>
+	</div>
+</body>
+</html>

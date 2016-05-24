@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(otp)"></div>
+		<div th:replace="fragment/roleheader :: role-header(${role})"></div>
+		<form class="form-horizontal" role="form" th:action="@{/changelimit}"
+			th:object="${account}" method="post">
+			<div th:text="${message}"></div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Enter the critical limit</label>
+				<div class="form-group col-md-5">
+					<input type="text"
+					th:field="*{criticalLimit}" name="criticallimit" class="form-control"
+					placeholder="Enter the new critical limit" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="submit" class="btn btn-default">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

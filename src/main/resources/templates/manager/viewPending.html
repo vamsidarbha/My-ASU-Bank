@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(myaccount)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Pending Transaction</h3>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Transfer Date</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Amount</th>
+						<th>Status</th>
+						<th>Comment</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${transactions.size()} == 0">
+						<td colspan="7">There are no transactions</td>
+					</tr>
+					<tr th:each="row : ${transactions}">
+						<td>
+							<span th:text="*{#dates.format(row.transferDate, 'MM/dd/yyyy')}"></span>
+						</td>
+						<td><span th:text="${row.fromAccount.user.username}"></span></td>
+						<td><span th:text="${row.toAccount.user.username}"></span></td>
+						<td><span th:text="${row.amount}"></span></td>
+						<td><span th:text="Pending"></span></td>
+						<td><span th:text="${row.comment}"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

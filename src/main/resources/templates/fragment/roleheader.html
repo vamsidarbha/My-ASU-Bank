@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="role-header(role)">
+		<div th:if="${role == 'ROLE_MERCHANT'}">
+			<div th:replace="fragment/merchant :: merchant-header"></div>
+		</div>
+		<div th:if="${role == 'ROLE_CUSTOMER'}">
+			<div th:replace="fragment/customer :: customer-header"></div>
+		</div>
+		<div th:if="${role == 'ROLE_ADMIN'}">
+			<div th:replace="fragment/admin :: admin-header"></div>
+		</div>
+		<div th:if="${role == 'ROLE_EMPLOYEE'}">
+			<div th:replace="fragment/employee :: employee-header"></div>
+		</div>
+		<div th:if="${role == 'ROLE_MANAGER'}">
+			<div th:replace="fragment/manager :: manager-header"></div>
+		</div>
+	</div>
+</body>
+</html>

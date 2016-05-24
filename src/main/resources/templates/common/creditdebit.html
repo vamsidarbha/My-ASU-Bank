@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(creditdebit)"></div>
+		<div th:if="${role} == customer">
+			<div th:replace="fragment/customer :: customer-header"></div>
+		</div>
+		<div th:if="${role} == merchant">
+			<div th:replace="fragment/merchant :: merchant-header"></div>
+		</div>
+		<div class="page-header">
+			<h1>Credit/Debit</h1>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<form id="cd-form" class="form-horizontal" role="form" action="#"
+			th:action="@{/customer/creditdebit}" th:object="${form}"
+			method="post">
+			<div class="form-group">
+				<label class="col-md-3 control-label">Encrypted Amount: </label>
+				<div class="col-md-5">
+					<textarea class="form-control" name="amount" id="amount"
+						th:field="*{amount}"></textarea>
+					<label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Credit/Debit: </label>
+				<div class="col-sm-5">
+					<select th:field="*{status}" class="form-control">
+						<option th:value="A_Debit">Debit</option>
+						<option th:value="A_Credit">Credit</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</form>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

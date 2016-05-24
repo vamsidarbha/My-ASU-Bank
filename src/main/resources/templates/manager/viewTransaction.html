@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(myaccount)"></div>
+		<div th:replace="fragment/manager :: manager-header"></div>
+		<div class="page-header">
+			<h3>Critical Transactions</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Created Date</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Amount</th>
+						<th>Status</th>
+						<th>Comment</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${critical.size()} == 0">
+						<td colspan="7">There are no transactions</td>
+					</tr>
+					<tr th:each="row : ${critical}">
+						<form th:action="@{/manager/approvetransaction}"
+							th:object="${row}" method="post">
+							<td>
+								<div th:if="*{transferDate} != null">
+									<span th:text="*{#dates.format(transferDate,'MM/dd/yyyy')}"></span>
+								</div>
+								<div th:if="*{transferDate} == null">
+									<span th:text="*{transferDate}"></span>
+								</div>
+							</td>
+							<td><span th:text="*{fromAccount.user.username}"></span></td>
+							<td><span th:text="*{toAccount.user.username}"></span></td>
+							<td><span th:text="*{amount}"></span></td>
+							<td th:if="*{status.equalsIgnoreCase('OP')}">
+								Critical Transaction Pending
+							</td>
+							<td><span th:text="*{comment}"></span></td>
+							<td><input type="hidden" name="transactionId"
+								th:value="*{transactionId}" />
+								<button type="submit" class="btn btn-primary">Authorize</button>
+							</td>
+						</form>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

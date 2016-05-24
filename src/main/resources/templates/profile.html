@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(profile)"></div>
+		<div th:replace="fragment/roleheader :: role-header(${role})"></div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="page-header">
+			<h3>Your Profile</h3>
+		</div>
+		<form id="profile-form" class="form-horizontal col-md-12" role="form"
+			th:action="@{/profile}" th:object="${form}" method="post">
+			<div class="form-group">
+				<label class="col-md-3 control-label">Username: </label>
+				<div class="col-md-5">
+					<input type="text" class="form-control" name="username" id="username"
+						th:field="*{username}" th:readonly="readonly"></input>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Email: </label>
+				<div class="col-md-5">
+					<input type="email" class="form-control" name="email" id="email"
+						th:field="*{email}" th:readonly="readonly"></input>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Address: </label>
+				<div class="col-md-5">
+					<input type="text" th:field="*{address}" class="form-control"
+						placeholder="Address" /> <label th:if="${#fields.hasErrors('address')}"
+						th:errors="*{address}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Phone Number: </label>
+				<div class="col-md-5">
+					<input type="text" th:field="*{phoneNumber}" class="form-control"
+						placeholder="Phone Number" /> <label
+						th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Date of Birth: </label>
+				<div class="col-md-5">
+					<div th:if="*{dateOfBirth} != null">
+						<input type="text" th:field="*{dateOfBirth}"
+							th:value="*{#dates.format(dateOfBirth, 'MM/dd/yyyy')}"
+							class="form-control" placeholder="Date of Birth (mm/dd/yyyy)" />
+					</div>
+					<div th:if="*{dateOfBirth} == null">
+						<input type="text" th:field="*{dateOfBirth}" class="form-control"
+							placeholder="Date of Birth (mm/dd/yyyy)" />
+					</div>
+					<label th:if="${#fields.hasErrors('dateOfBirth')}"
+						th:errors="*{dateOfBirth}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Security Question: </label>
+				<div class="col-md-5">
+					<input type="text" th:field="*{securityQuestion}" class="form-control"
+						placeholder="This will be used to recover your account" /> <label
+						th:if="${#fields.hasErrors('securityQuestion')}"
+						th:errors="*{securityQuestion}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-3 control-label">Security Answer: </label>
+				<div class="col-md-5">
+					<input type="text" th:field="*{securityAnswer}" class="form-control"
+						placeholder="Answer for your question" /> <label
+						th:if="${#fields.hasErrors('securityAnswer')}"
+						th:errors="*{securityAnswer}"></label>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-9">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</form>
+		<div class="col-md-offset-3 col-md-9">
+			<p>
+				<a class="btn btn-primary" th:href="@{/changepassword}">Change Password</a>
+			</p>
+			<p>
+				<a class="btn btn-primary" th:href="@{/pii}">Add Personal Identification
+					Information</a>
+			</p>
+			<p th:if="${role} == 'ROLE_CUSTOMER' or ${role} == 'ROLE_MERCHANT'">
+			<form th:action="@{/deleteprofile}" method="POST">
+				<input type="hidden" name="user_id" id="user_id" th:value="${form.email}" />
+				<button class="btn btn-danger" type="submit">Delete Profile</button>
+			</form>
+			</p>
+		</div>
+	</div>
+	<script th:src="@{/webjars/jquery-validation/1.14.0/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/profile.js}"></script>
+</body>
+</html>

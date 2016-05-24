@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(admin)"></div>
+		<div th:replace="fragment/admin :: admin-header"></div>
+		<div class="page-header">
+			<h3>View Logs</h3>
+		</div>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Logs (Last 100 rows)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${listlogs.size()} == 0">
+						<td colspan="7">There are no transactions</td>
+					</tr>
+					<tr th:each="row : ${listlogs}">
+						<td><span th:text="${row}"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

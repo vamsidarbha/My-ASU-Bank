@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+    <div class="container">
+        <div th:replace="fragment/common :: top-nav(recoverPassword)"></div>
+           <form th:action="@{/login/verifyIdentity}" method="post">
+            <div class="form-group">
+                <label>Security Question:</label>
+                <div id="security-question" th:text="${securityQuestion}"></div>
+            </div>
+            <div class="form-group">
+                <label for="securityAnswer">Please enter your answer</label>
+                <input id="security-answer" type="password" name="securityAnswer" class="form-control" />
+            </div>
+            <input type="hidden" name="securityQuestion" th:value="${securityQuestion}" />
+            <input type="hidden" name="email" th:value="${email}" />
+            <button type="submit" class="btn btn-primary">Verify</button>
+           </form>
+        <div th:replace="fragment/common :: [//footer]"></div>
+    </div>
+</body>
+</html>

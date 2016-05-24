@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="customer-header">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a th:href="@{/customer/transferfunds}">Transfer
+								Funds</a></li>
+						<li><a th:href="@{/customer/initiatetransaction}">Initiate
+								Transaction</a></li>
+						<li><a th:href="@{/customer/authorizemerchant}">Merchants
+								Request</a></li>
+						<li><a th:href="@{/customer/creditdebit}">Credit/Debit</a></li>
+					</ul>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</div>
+</body>
+</html>

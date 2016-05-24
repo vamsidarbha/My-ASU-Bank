@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(agency)"></div>
+		<div th:include="fragment/agency :: agency-header"></div>
+		<h2>Admin Requests</h2>
+		<div th:replace="fragment/common :: message"></div>
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr class="info">
+						<th>Email</th>
+						<th>Status</th>
+						<th>Authorize</th>
+						<th>Decline</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${piiRequest.size()} == 0">
+						<td colspan="4">There are no requests</td>
+					</tr>
+					<tr style="cursor: pointer" th:each="request : ${piiRequest}">
+						<td><span th:text="*{request.email}"></span></td>
+						<td><span th:text="*{request.status}"></span></td>
+						<td>
+							<form th:object="${request}"
+								th:action="@{/agency/approvePIIRequest}" method="POST">
+								<input type="hidden" name="piiRId" th:value="*{piiRId}" />
+								<button type="submit" class="btn btn-primary">Authorize</button>
+							</form>
+						</td>
+						<td>
+							<form th:object="${request}"
+								th:action="@{/agency/declinePIIRequest}" method="POST">
+								<input type="hidden" name="piiRId" th:value="*{piiRId}" />
+								<button type="submit" class="btn btn-primary">Decline</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>

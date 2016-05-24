@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="fragment/common :: headerFragment" />
+<body>
+	<div class="container">
+		<div th:replace="fragment/common :: top-nav(error)"></div>
+		<div th:if="${role == 'merchant'}">
+			<div th:replace="fragment/merchant :: merchant-header"></div>
+		</div>
+		<div th:if="${role == 'customer'}">
+			<div th:replace="fragment/customer :: customer-header"></div>
+		</div>
+
+		<div th:replace="fragment/common :: message"></div>
+		<div th:replace="fragment/common :: footer"></div>
+	</div>
+</body>
+</html>
